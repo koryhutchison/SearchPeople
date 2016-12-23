@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+<br />
+<body>    
+    <div class="form-inline">
+        <label for="search-input">Search</label>
+        <input class="form-control" type="text" id="SearchBox">
+        <button class="btn btn-primary" id="SearchButton">Search</button>
+        <button class="btn btn-primary" id="allPeopleButton">Get All People</button>
+    </div>
+    <br />
+<div id="UpdatePanel">
+
+</div>
+</body>
+
+ @section Scripts{
+    <script>
+    $(document).ready(function () {
+
+        // This is for Get All People
+        $("#allPeopleButton").click(function () {
+
+            $.ajax({
+                url: "@Url.Action("GetAllPeople","Search")",
+                data: "",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    loadData(data);
+                },
+                error: function () {
+                    alert("Failed! Please try again.");
+                }
+            });
+
+        });
+
+        // this will use for Get a person based on a keyword
+        $("#SearchButton").click(function () {
+            $.ajax({
+                url: "@Url.Action("GetPersonWithKeyword","Search")",
+            data: { prefix: $('#SearchBox').val() },
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            loadData(data);
+        },
+        error: function () {
+            alert("Failed! Please try again.");
+        }
+    });
+});
+
+    function loadData(data) {
+        // Here we will format & load/show data
+        var tab = $('<table class="table"></table>');
+        var thead = $('<thead></thead>');
+        thead.append('<th>First Name</th>');
+        thead.append('<th>Last Name</th>');
+        thead.append('<th>Street Address</th>');
+        thead.append('<th>City</th>');
+        thead.append('<th>State</th>');
+        thead.append('<th>Zip</th>');
+        thead.append('<th>Age</th>');
+        thead.append('<th>Interests</th>');
+        thead.append('<th>View Details</th>');
+
+        tab.append(thead);
+        $.each(data, function (i, val) {
+            // Append database data here, and that infoUrl is a way to get the URL to show up for the user to click on and see a picture and all the data.
+            var infoUrl = '@Html.ActionLink("Details", "Details", "People", new {id=-1}, null)';
+            infoUrl = infoUrl.replace("-1", val.PersonID);
+            var trow = $('<tr></tr>');
+            trow.append('<td>' + val.FirstName + '</td>');
+            trow.append('<td>' + val.LastName + '</td>');
+            trow.append('<td>' + val.StreetAddress + '</td>');
+            trow.append('<td>' + val.City + '</td>');
+            trow.append('<td>' + val.State + '</td>');
+            trow.append('<td>' + val.Zip + '</td>');
+            trow.append('<td>' + val.Age + '</td>');
+            trow.append('<td>' + val.Interests + '</td>');
+            trow.append('<td>' + infoUrl + '</td>');
+            tab.append(trow);
+        });
+        $("tr:odd", tab).css('background-color', '#C4C4C4');
+        $("#UpdatePanel").html(tab);
+    };
+
+    });
+    </script>
+    }

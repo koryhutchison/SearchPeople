@@ -1,0 +1,30 @@
+﻿@model SearchPeople.Models.Person
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+
+    <div class="container">
+        <div class="col-md-5">
+            <h4><b>First Name:</b> @Html.DisplayFor(model => model.FirstName)</h4> 
+            <h4><b>Last Name:</b> @Html.DisplayFor(model => model.LastName)</h4> 
+            <h4><b>Street Address:</b> @Html.DisplayFor(model => model.StreetAddress)</h4> 
+            <h4><b>City:</b> @Html.DisplayFor(model => model.City)</h4> 
+            <h4><b>State:</b> @Html.DisplayFor(model => model.State)</h4> 
+            <h4><b>Zip:</b> @Html.DisplayFor(model => model.Zip)</h4> 
+            <h4><b>Age:</b> @Html.DisplayFor(model => model.Age)</h4> 
+            <h4><b>Interests:</b> @Html.DisplayFor(model => model.Interests)</h4> 
+        </div>
+        <div class="col-md-7">
+            <img src="@Html.DisplayFor(model => model.Picture)" class="img-responsive" style="max-height: 500px; max-width: 500px" />
+        </div>
+
+    </div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", "People", new { id = Model.PersonID }, new { @class="btn btn-primary" }) |
+    @Html.ActionLink("Back to List", "Index", "Search", null, new { @class="btn btn-primary"})
+</p>
